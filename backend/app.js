@@ -1,10 +1,11 @@
-/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable linebreak-style */
 // app.js — входной файл
 require('dotenv').config();
+const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
+
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const {
@@ -13,15 +14,16 @@ const {
 } = require('./middlewares/validate');
 const NotFoundError = require('./errors/notFoundError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const { corsHendler } = require('./middlewares/cors');
+// const option = require('./middlewares/checkCors');
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 // подключаемся к серверу mongo
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb1');
 
 app.use(requestLogger);
-app.use(corsHendler);
+// app.use(corsHendler);
 
 app.use('/users', auth, require('./routes/users'));
 app.use('/cards', auth, require('./routes/cards'));
