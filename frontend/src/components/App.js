@@ -61,17 +61,17 @@ function App() {
     }
 
     function handleCardLike(card) {
-        const isLiked = card.likes.some(i => i._id === currentUser._id);
+        const isLiked = card.likes.some(i => i === currentUser._id);
         !isLiked
         ? (apiElement.setLikeCard(card._id)
             .then((newCard) => {
-                setCards((cards) => cards.map((item) => item._id ===card._id ? newCard : item))
+                setCards((cards) => cards.map((item) => item._id === card._id ? newCard.data : item))
             })
             .catch((err) => console.log('Ошибка установки лайка.'))
         )
         : (apiElement.deleteLikeCard(card._id)
             .then((newCard) => {
-            setCards((cards) => cards.map((item) => item._id === card._id ? newCard : item))
+            setCards((cards) => cards.map((item) => item._id === card._id ? newCard.data : item))
             })
             .catch((err) => console.log('Ошибка удаления лайка.'))
         );
@@ -90,7 +90,7 @@ function App() {
     function handleUpdateUser(userInfo) {
         apiElement.loadUserInfo(userInfo)
             .then((res) => {
-                setCurrentUser(res);
+                setCurrentUser(res.data);
                 closeAllPopups();
             })
             .catch((err) => console.log('Ошибка обновления данных пользователя.'))
@@ -99,7 +99,7 @@ function App() {
     function handleUpdateAvatar(userAvatar) {
         apiElement.setAvatar(userAvatar)
             .then((res) => {
-                setCurrentUser(res);
+                setCurrentUser(res.data);
                 closeAllPopups();
             })
             .catch((err) => console.log('Ошибка обновления аватара пользователя.'))
@@ -135,7 +135,6 @@ function App() {
         authApiElement.login(email, password)
             .then((res) => {
                 if (res.token) {
-                    console.log(res.token);
                     localStorage.setItem('token', res.token);
                     setLogin();
                     setEmail(email);
@@ -160,17 +159,17 @@ function App() {
 
     useEffect(() => {
         apiElement.getUserInfo()
-            .then((res) => setCurrentUser(res))
+            .then((res) => setCurrentUser(res.data))
             .catch((err) => console.log('Ошибка получения данных пользователя.'))
-    },[])
+    },[loggedIn])
 
     useEffect(() => {
         apiElement.getCardList()
             .then((res) => {
-                setCards(res);   
+                setCards(res.data);   
             })
             .catch((err) => console.log('Ошибка получения карточек.'))
-    },[])
+    },[loggedIn])
 
     useEffect(() => {
         function closeByEscape(evt) {
