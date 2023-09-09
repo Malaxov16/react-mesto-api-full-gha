@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 // мидлваре для работы CORS не зайдествован
 
-const allowedCors = [
+const whiteList = [
   'http://project-mesto.nomoredomainsicu.ru',
   'https://project-mesto.nomoredomainsicu.ru',
   'https://praktikum.tk',
@@ -11,12 +11,11 @@ const allowedCors = [
 ];
 
 module.exports = (req, res, next) => {
-  console.log(req);
   const { origin } = req.headers;
   const { method } = req;
   const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
   const requestHeaders = req.headers['access-control-request-headers'];
-  if (allowedCors.includes(origin)) {
+  if (whiteList.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
   }
   if (method === 'OPTIONS') {
@@ -29,3 +28,11 @@ module.exports = (req, res, next) => {
   }
   next();
 };
+
+const corsOptions = {
+  origin: whiteList,
+  credentials: true,
+  methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
+};
+
+module.exports = corsOptions;

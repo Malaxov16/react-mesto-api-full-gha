@@ -14,10 +14,10 @@ const {
 } = require('./middlewares/validate');
 const NotFoundError = require('./errors/notFoundError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-// const option = require('./middlewares/checkCors');
+const corsOptions = require('./middlewares/corsOptions');
 
 const app = express();
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 // подключаемся к серверу mongo
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb1');
