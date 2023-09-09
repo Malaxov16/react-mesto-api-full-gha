@@ -39,9 +39,7 @@ class authApi {
             `${this._baseUrl}/signin`,
             {
                 method: 'POST',
-                headers: {
-                    "Content-Type": "application/json" 
-                },
+                headers: this._headers,
                 body: JSON.stringify({
                     email: this._email,
                     password: this._password,

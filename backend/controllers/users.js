@@ -7,7 +7,7 @@ const NotFoundError = require('../errors/notFoundError');
 const BadRequestError = require('../errors/badRequestError');
 const ConflictError = require('../errors/conflictError');
 
-const { JWT_SECRET } = process.env;
+const { JWT_SECRET = 'jwt_secret' } = process.env;
 
 const opts = { runValidators: true, new: true };
 

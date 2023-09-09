@@ -135,6 +135,7 @@ function App() {
         authApiElement.login(email, password)
             .then((res) => {
                 if (res.token) {
+                    console.log(res.token);
                     localStorage.setItem('token', res.token);
                     setLogin();
                     setEmail(email);
